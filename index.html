@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Anemos Energy Trading LLC</title>
+  <meta name="description" content="Anemos Energy Trading LLC — Systematic quantitative trading in wholesale electricity markets." />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy:   #0a1628;
+      --deep:   #0d1f3c;
+      --accent: #00c2e0;
+      --light:  #e8edf4;
+      --muted:  #8a9bb5;
+      --white:  #ffffff;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: var(--navy);
+      color: var(--light);
+      line-height: 1.7;
+    }
+
+    /* ── NAV ──────────────────────────────── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.25rem 5%;
+      background: rgba(10, 22, 40, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(0,194,224,0.12);
+    }
+
+    .nav-logo {
+      font-size: 1.15rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: var(--white);
+      text-decoration: none;
+    }
+    .nav-logo span { color: var(--accent); }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 2.5rem;
+    }
+    nav a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.85rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    nav a:hover { color: var(--accent); }
+
+    /* ── HERO ─────────────────────────────── */
+    #hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background-image:
+        url('https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=1800&auto=format&fit=crop&q=80');
+      background-size: cover;
+      background-position: center 40%;
+      filter: brightness(0.35) saturate(0.8);
+    }
+
+    .hero-grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0,194,224,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,194,224,0.04) 1px, transparent 1px);
+      background-size: 60px 60px;
+      animation: gridPan 40s linear infinite;
+    }
+    @keyframes gridPan {
+      0%   { background-position: 0 0; }
+      100% { background-position: 60px 60px; }
+    }
+
+    .hero-veil {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        135deg,
+        rgba(10,22,40,0.7) 0%,
+        rgba(0,194,224,0.06) 60%,
+        rgba(10,22,40,0.85) 100%
+      );
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 780px;
+      padding: 0 5%;
+      margin-top: 80px;
+    }
+
+    .hero-eyebrow {
+      display: inline-block;
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1.2rem;
+      border-left: 2px solid var(--accent);
+      padding-left: 0.75rem;
+    }
+
+    h1 {
+      font-size: clamp(2.4rem, 5.5vw, 4.2rem);
+      font-weight: 700;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      color: var(--white);
+      margin-bottom: 1.5rem;
+    }
+    h1 em {
+      font-style: normal;
+      color: var(--accent);
+    }
+
+    .hero-desc {
+      font-size: 1.1rem;
+      color: rgba(232,237,244,0.75);
+      max-width: 600px;
+      margin-bottom: 2.5rem;
+    }
+
+    .hero-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.9rem 2.2rem;
+      background: var(--accent);
+      color: var(--navy);
+      font-weight: 700;
+      font-size: 0.9rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border-radius: 3px;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .hero-cta:hover { background: #33cce5; transform: translateY(-2px); }
+
+    /* ── SECTIONS ─────────────────────────── */
+    section {
+      padding: 6rem 5%;
+    }
+    section:nth-child(even) {
+      background: var(--deep);
+    }
+
+    .section-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-size: 0.72rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.75rem;
+    }
+
+    h2 {
+      font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--white);
+      margin-bottom: 1.5rem;
+      line-height: 1.2;
+    }
+
+    p {
+      color: rgba(232,237,244,0.72);
+      max-width: 680px;
+    }
+
+    .accent-divider {
+      width: 48px;
+      height: 3px;
+      background: var(--accent);
+      border-radius: 2px;
+      margin-bottom: 1.5rem;
+    }
+
+    /* ── ABOUT split ──────────────────────── */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: center;
+    }
+    .about-image {
+      border-radius: 4px;
+      overflow: hidden;
+      aspect-ratio: 4/3;
+    }
+    .about-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: saturate(0.7) brightness(0.85);
+      transition: filter 0.4s;
+    }
+    .about-image:hover img { filter: saturate(1) brightness(0.95); }
+
+    /* ── CARDS ────────────────────────────── */
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-top: 3rem;
+    }
+
+    .card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(0,194,224,0.12);
+      border-radius: 4px;
+      padding: 2rem;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .card:hover {
+      border-color: rgba(0,194,224,0.4);
+      transform: translateY(-3px);
+    }
+
+    .card-icon {
+      font-size: 1.6rem;
+      margin-bottom: 1rem;
+    }
+
+    .card h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--white);
+      margin-bottom: 0.6rem;
+      letter-spacing: 0.02em;
+    }
+
+    .card p {
+      font-size: 0.88rem;
+      line-height: 1.65;
+      max-width: 100%;
+    }
+
+    /* ── CONTACT ──────────────────────────── */
+    #contact {
+      background: var(--navy);
+      text-align: center;
+    }
+
+    #contact .section-inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    #contact .accent-divider {
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    #contact p {
+      margin: 0 auto 2rem;
+      text-align: center;
+    }
+
+    .contact-email {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 1.1rem;
+      color: var(--accent);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(0,194,224,0.3);
+      padding-bottom: 2px;
+      transition: border-color 0.2s;
+    }
+    .contact-email:hover { border-color: var(--accent); }
+
+    /* ── FOOTER ───────────────────────────── */
+    footer {
+      background: rgba(0,0,0,0.3);
+      padding: 1.5rem 5%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+
+    footer a { color: var(--muted); text-decoration: none; }
+    footer a:hover { color: var(--accent); }
+
+    /* ── RESPONSIVE ───────────────────────── */
+    @media (max-width: 768px) {
+      nav ul { display: none; }
+      .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a class="nav-logo" href="#">ANEMOS<span>.</span></a>
+    <ul>
+      <li><a href="#about">About</a></li>
+      <li><a href="#approach">Approach</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-grid"></div>
+    <div class="hero-veil"></div>
+    <div class="hero-content">
+      <span class="hero-eyebrow">Anemos Energy Trading LLC</span>
+      <h1>Quantitative Trading in<br /><em>Electricity Markets</em></h1>
+      <p class="hero-desc">
+        A systematic investment firm operating in wholesale power markets,
+        applying rigorous quantitative methods to capitalize on structural
+        inefficiencies in energy price formation.
+      </p>
+      <a href="#contact" class="hero-cta">
+        Get in Touch
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="section-inner about-grid">
+      <div>
+        <div class="section-label">About</div>
+        <div class="accent-divider"></div>
+        <h2>Where Energy Meets Quantitative Finance</h2>
+        <p>
+          Anemos Energy Trading LLC is a systematic investment manager focused
+          on wholesale electricity markets in the United States. We operate
+          exclusively through financial instruments, with no ownership of
+          physical energy infrastructure.
+        </p>
+        <br />
+        <p>
+          Electricity markets are governed by physical constraints, weather, and
+          grid topology — factors entirely distinct from the macroeconomic drivers
+          of traditional asset classes. This structural independence creates a
+          differentiated source of return for sophisticated quantitative participants.
+        </p>
+      </div>
+      <div class="about-image">
+        <img
+          src="https://images.unsplash.com/photo-1509391366360-2e959784a276?w=900&auto=format&fit=crop&q=80"
+          alt="Power transmission lines at dusk"
+          loading="lazy"
+        />
+      </div>
+    </div>
+  </section>
+
+  <!-- APPROACH -->
+  <section id="approach">
+    <div class="section-inner">
+      <div class="section-label">Our Approach</div>
+      <div class="accent-divider"></div>
+      <h2>Systematic. Data-Driven.<br />Disciplined.</h2>
+      <p>
+        Our process integrates diverse data sources with advanced quantitative
+        methods to model market dynamics and identify opportunities. A systematic
+        optimization layer translates these insights into trading decisions designed
+        to generate consistent, risk-adjusted returns.
+      </p>
+
+      <div class="cards">
+        <div class="card">
+          <div class="card-icon">⚡</div>
+          <h3>Wholesale Power Markets</h3>
+          <p>We focus on financial trading within the structured two-settlement system of U.S. electricity markets, operating purely through virtual financial instruments with no physical asset requirements.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">🤖</div>
+          <h3>Quantitative Models</h3>
+          <p>Advanced machine learning and statistical models continuously adapt to evolving market conditions, informing a disciplined and repeatable investment process.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">📊</div>
+          <h3>Portfolio Diversification</h3>
+          <p>Electricity market returns are driven by localized physical and meteorological factors, offering a source of alpha that is structurally uncorrelated with equities, bonds, and other traditional asset classes.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">🏦</div>
+          <h3>Capital Efficiency</h3>
+          <p>The strategy is designed to be highly capital-efficient. A portion of fund assets is held in secure, liquid instruments while satisfying market operator collateral requirements.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">🌐</div>
+          <h3>Scalable Infrastructure</h3>
+          <p>Our technology and research infrastructure is built to operate across multiple power grids and market structures, supporting disciplined geographic expansion over time.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">🛡️</div>
+          <h3>Risk Management</h3>
+          <p>Positions are distributed across locations and time intervals, with systematic controls designed to limit exposure to any single market event or idiosyncratic outcome.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- IMAGE BREAK -->
+  <div style="height:340px; overflow:hidden; position:relative;">
+    <img
+      src="https://images.unsplash.com/photo-1466611653911-95081537e5b7?w=1800&auto=format&fit=crop&q=80"
+      alt="Wind turbines at sunset"
+      style="width:100%;height:100%;object-fit:cover;filter:brightness(0.35) saturate(0.7);"
+    />
+    <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;padding:2rem;">
+      <div>
+        <div style="font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent);margin-bottom:1rem;">The Opportunity</div>
+        <div style="font-size:clamp(1.3rem,3.5vw,2.1rem);font-weight:700;color:#fff;max-width:680px;line-height:1.3;">
+          As global electricity demand accelerates, wholesale power markets present a growing opportunity for disciplined systematic participants.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="section-inner">
+      <div class="section-label">Contact</div>
+      <div class="accent-divider"></div>
+      <h2>Get in Touch</h2>
+      <p>
+        For inquiries about investment opportunities or partnership discussions,
+        please reach out directly.
+      </p>
+      <a class="contact-email" href="mailto:info@anemostrading.com">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+        info@anemostrading.com
+      </a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <span>&copy; 2025 Anemos Energy Trading LLC. All rights reserved.</span>
+    <span>
+      anemostrading.com &nbsp;·&nbsp;
+      <a href="mailto:info@anemostrading.com">info@anemostrading.com</a>
+    </span>
+  </footer>
+
+</body>
+</html>
